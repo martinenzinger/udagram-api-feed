@@ -43,9 +43,9 @@ router.get('/',
 // Get a feed resource
 router.get('/:id',
     async (req: Request, res: Response) => {
+      const {id} = req.params;
       let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       console.log(new Date().toLocaleString() + `: ${ip} GET /feed/${id} - Get feed item #${id}`);
-      const {id} = req.params;
       const item = await FeedItem.findByPk(id);
       res.send(item);
   });
@@ -54,9 +54,9 @@ router.get('/:id',
 router.get('/signed-url/:fileName',
     requireAuth,
     async (req: Request, res: Response) => {
+      const {fileName} = req.params;
       let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       console.log(new Date().toLocaleString() + `: ${ip} GET /feed/signed-url/${fileName} - Get signed URL for ${fileName}`);
-      const {fileName} = req.params;
       const url = AWS.getPutSignedUrl(fileName);
       res.status(201).send({url: url});
   });
